@@ -1,0 +1,2404 @@
+{
+	"info": {
+		"_postman_id": "64407fb8-656c-4e20-8a15-a31ec52aaac7",
+		"name": "Presentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 _ Login",
+			"item": [
+				{
+					"name": "Valid Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "cca81d3b-b044-413a-80e3-2018fd3770f8",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"if(jsonData.token!=null){\r",
+									"    pm.environment.set(\"admin_token\",jsonData.token);\r",
+									"}\r",
+									"\r",
+									"// verify if the login API is returning 200 OK\r",
+									"pm.test(\"/auth/login is returning 200 OK\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// verify if login is successful\r",
+									"pm.test(\"Login is successful for valid credentials\",()=>{\r",
+									"    pm.expect(jsonData.success).to.exist.and.to.be.true;\r",
+									"});\r",
+									"\r",
+									"// verify if a token is generated\r",
+									"pm.test(\"A token is successfully generated\",()=>{\r",
+									"        pm.expect(jsonData.token).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//verify if a successfull message is generated\r",
+									"pm.test(\"Login successful - message is returned\", ()=>{\r",
+									"    pm.expect(jsonData.message).to.contain(\"Login successful\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "e2e2afe6-df06-4fc6-b0ce-7eef041f432d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"super.admin@example.com\",\r\n    \"password\": \"super.password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/login"
+					},
+					"response": [
+						{
+							"id": "e4051497-6359-4c94-8bf2-a0c2a3fd410e",
+							"name": "Valid Admin Login",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"super.admin@example.com\",\r\n    \"password\": \"super.password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/auth/login"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 17:47:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": true,\n    \"message\": \"Login successful\",\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIkFETUlOIl0sInN1YiI6InN1cGVyLmFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNjk3NzM3NjQ5LCJleHAiOjE3MDAzMjk2NDl9._R2IiWyIWyT3tlnApoy2_MW0bCyqgEgTNOlxXRMvrAs\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Invalid Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e0f8747e-2e62-4661-a5cb-09638f63f9c7",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"if(jsonData.token!=null){\r",
+									"    pm.environment.set(\"admin_token\",jsonData.token);\r",
+									"}\r",
+									"\r",
+									"// verify if the login API is returning 200 OK\r",
+									"pm.test(\"/auth/login is returning 200 OK\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// verify if login is unsuccessful\r",
+									"pm.test(\"Login is unsuccessful for wrong credentials\",()=>{\r",
+									"    pm.expect(jsonData.success).to.exist.and.to.be.false;\r",
+									"});\r",
+									"\r",
+									"// no token is generated\r",
+									"pm.test(\"A token is successfully generated\",()=>{\r",
+									"        pm.expect(jsonData.token).to.not.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"//verify if an usuccessfull message is generated\r",
+									"pm.test(\"Incorrect Email or Password - message is returned\", ()=>{\r",
+									"    pm.expect(jsonData.message).to.contain(\"Incorrect Email or Password\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "52898d46-5fca-47c8-9c64-3025a6b31a77",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/login"
+					},
+					"response": [
+						{
+							"id": "9b38a89c-9335-4308-baee-417c984cc523",
+							"name": "Valid Admin Login Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"\",\r\n    \"password\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/auth/login"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 17:54:36 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": false,\n    \"message\": \"Incorrect Email or Password\"\n}"
+						}
+					]
+				}
+			],
+			"id": "62df48c3-4b52-4d3e-8aa3-aa5d0909e4ef"
+		},
+		{
+			"name": "02 _ Registration",
+			"item": [
+				{
+					"name": "Valid Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3c310b30-145f-4499-a029-a5d6a699a85d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status Code is 200 OK\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"New account registration is successful\", () => {\r",
+									"    pm.expect(jsonData.success).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message to verify email is generated\", () => {\r",
+									"    pm.expect(jsonData.message).to.contain(\"Registration success: please verify email\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3d4a756a-ed69-414c-a1b1-7f7d5ea6ef3c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"temp3@example.com\",\r\n    \"password\": \"bjit1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/register"
+					},
+					"response": [
+						{
+							"id": "7cbbb871-b087-4571-96af-a9d7436496da",
+							"name": "Valid Registration",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"temp1@example.com\",\r\n    \"password\": \"bjit1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/applicants/register"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 18:05:55 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": true,\n    \"message\": \"Registration success: please verify email\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Repeat Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3c310b30-145f-4499-a029-a5d6a699a85d",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Status Code should not be 200\",()=>{\r",
+									"    pm.response.to.not.have.status(200);\r",
+									"})\r",
+									"\r",
+									"\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"New account registration should not be successful\", () => {\r",
+									"    pm.expect(jsonData.success).to.be.false;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Message to verify email should not be generated\", () => {\r",
+									"    pm.expect(jsonData.message).to.not.contain(\"Registration success: please verify email\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "0a59c9ae-636d-45f6-ab41-e9240417741c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"temp1@example.com\",\r\n    \"password\": \"bjit1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/register"
+					},
+					"response": [
+						{
+							"id": "7406f611-b22d-4be1-849d-d136566f737c",
+							"name": "Repeat Registration",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"temp1@example.com\",\r\n    \"password\": \"bjit1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/applicants/register"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 18:06:17 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": true,\n    \"message\": \"Registration success: please verify email\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Invalid Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3c310b30-145f-4499-a029-a5d6a699a85d",
+								"exec": [
+									"pm.test(\"Invalid registration returns 403 Forbidden\",()=>{\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "978e7da7-e13f-410c-9805-a26e03c9d5f3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"\",\r\n    \"password\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/register"
+					},
+					"response": [
+						{
+							"id": "8be8e3ad-13d5-4223-a623-eedb8b51bdb5",
+							"name": "Valid Registration Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"\",\r\n    \"password\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/applicants/register"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 18:08:14 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": null
+						}
+					]
+				}
+			],
+			"id": "355337f6-e375-4e7c-9492-8fbf07869fc3"
+		},
+		{
+			"name": "03 _ Email Verification",
+			"item": [
+				{
+					"name": "Verify Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17240671-69be-4a89-a480-a2e4ebce6381",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response is 200 OK\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Email is verified\", () => {\r",
+									"    pm.expect(jsonData.verified).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verificaiton confirmation mail is generated\", () => {\r",
+									"    pm.expect(jsonData.message).to.contain(\"Email Verification successful\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c4557dba-49f5-4a93-9484-06590c5583ef",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"trial1@example.com\",\r\n    \"verificationCode\":\"26778a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/register/email/verify"
+					},
+					"response": [
+						{
+							"id": "f3bbbab6-c64d-421f-a463-51ed70ce1838",
+							"name": "Verify Email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"temp3@example.com\",\r\n    \"verificationCode\":\"26778a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{baseURL}}/applicants/register/email/verify"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 19 Oct 2023 18:20:09 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"verified\": true,\n    \"message\": \"Email Verification successful\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify Email Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17240671-69be-4a89-a480-a2e4ebce6381",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Response is 400 Bad Request\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Email verification is not performed\", () => {\r",
+									"    pm.expect(jsonData.verified).to.be.false;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Error message is delivered\", () => {\r",
+									"    pm.expect(jsonData.message).to.contain(\"Email Verification failed\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "31a82125-406f-4166-9d74-a61ff4207d60",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"trial1@example.com\",\r\n    \"verificationCode\" : \"26778a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/register/email/verify"
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8fe9eeaa-bb4c-4c4b-baff-70c808450c48",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"user_token\",jsonData.token);\r",
+									"\r",
+									"pm.test(\"/auth/login is returning 200 OK\",()=>{\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Login is successful for valid credentials\",()=>{\r",
+									"    pm.expect(jsonData.success).to.exist.and.to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"A token is successfully generated\",()=>{\r",
+									"        pm.expect(jsonData.token).to.exist;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "b3f4b0a5-de91-43ae-b664-2900dbc937b1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"tea@example.com\",\r\n    \"password\" : \"bjit1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/auth/login"
+					},
+					"response": []
+				}
+			],
+			"id": "aa8c606f-52b7-4fe7-9b3b-ff9a6a11e74f"
+		},
+		{
+			"name": "04 _ Resources",
+			"item": [
+				{
+					"name": "Upload Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8346f1bd-4fff-4959-9524-e340f4f1d479",
+								"exec": [
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var filename = jsonData.name;\r",
+									"\r",
+									"if (filename.toLowerCase().endsWith(\".jpeg\")||filename.toLowerCase().endsWith(\".jpg\")||filename.toLowerCase().endsWith(\".png\")){\r",
+									"        pm.environment.set(\"ImageID\", jsonData.id)\r",
+									"} \r",
+									"else if(filename.toLowerCase().endsWith(\".pdf\")){\r",
+									"        pm.environment.set(\"ResumeID\", jsonData.id)\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check if the file upload operation is successful\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.expect(jsonData.success).to.exist.and.be.true;\r",
+									"    pm.expect(jsonData.message).to.contain(\"File upload successful\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "dc6b854b-62a7-4503-8e90-c40077efca39",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/resource/upload",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"resource",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Resume",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "921db4c9-1e34-4d7f-bc45-c8afc5a71e10",
+								"exec": [
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var filename = jsonData.name;\r",
+									"// var reqname = request.files[0].name;\r",
+									"// console.log(reqname);\r",
+									"\r",
+									"// Parse the request body to extract the file name\r",
+									"var uploadedFileName = pm.request.body.formdata[0].src.split('/').pop();\r",
+									"console.log(uploadedFileName)\r",
+									"\r",
+									"\r",
+									"if (filename.toLowerCase().endsWith(\".jpeg\")||filename.toLowerCase().endsWith(\".jpg\")||filename.toLowerCase().endsWith(\".png\")){\r",
+									"        pm.environment.set(\"ImageID\", jsonData.id)\r",
+									"} \r",
+									"else if(filename.toLowerCase().endsWith(\".pdf\")){\r",
+									"        pm.environment.set(\"ResumeID\", jsonData.id)\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check if the file upload operation is successful\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.expect(jsonData.success).to.exist.and.be.true;\r",
+									"    pm.expect(jsonData.message).to.contain(\"File upload successful\")\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// pm.test(\"Same file confirmation\", ()=>{\r",
+									"\r",
+									"// })"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "4f136c3c-feec-424a-9ccc-bbe6d9925c61",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "Applicant_1_resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/resource/upload",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"resource",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download Image",
+					"id": "815426d5-a4d0-418a-a423-75f23d82b3ba",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/resource/{{ImageID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Download Resume",
+					"id": "401e07a5-7bc5-425b-bc10-9dcbe2e349e6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/resource/{{ResumeID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "55f7a4c2-97ac-4052-8d44-c6b672eca929"
+		},
+		{
+			"name": "05 _ Creating Profile",
+			"item": [
+				{
+					"name": "Update Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17be3d64-88ae-4d62-9123-7a77332b8ec3",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"applicant_id\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"Updating Profile is successful\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"An user id is assigned\", () =>{\r",
+									"    pm.expect(jsonData.id).to.exist;\r",
+									"})\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3aee873c-194b-4020-b2b1-d4a96e748b3a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Temp\",\r\n    \"lastName\": \"Three\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"2021-06-31T10:37:38.909Z\",\r\n    \"degreeName\": \"BSc\",\r\n    \"institutionName\": \"KHSC\",\r\n    \"cgpa\": \"3.43\",\r\n    \"passingYear\": \"2022-05-12\",\r\n    \"presentAddress\": \"Bashundhara,Dhaka\",\r\n    \"phone\": \"01234567890\",\r\n    \"profileImageId\": {{ImageID}},\r\n    \"resumeId\": {{ResumeID}},\r\n    \"email\": \"u1@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update w/o Authorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17be3d64-88ae-4d62-9123-7a77332b8ec3",
+								"exec": [
+									"pm.test(\"Updating Profile is not possible without authorization\", () => {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "8f3ce6e0-1566-4ccb-a1b0-3ed591308340",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Tea\",\r\n    \"lastName\": \"Green\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"2021-06-31T10:37:38.909Z\",\r\n    \"degreeName\": \"BSc\",\r\n    \"institutionName\": \"KHSC\",\r\n    \"cgpa\": \"3.43\",\r\n    \"passingYear\": \"2022-05-12\",\r\n    \"presentAddress\": \"Bashundhara,Dhaka\",\r\n    \"phone\": \"01234567890\",\r\n    \"profileImageId\": {{ImageID}},\r\n    \"resumeId\": {{ResumeID}},\r\n    \"email\": \"u1@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile for Malformed data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "17be3d64-88ae-4d62-9123-7a77332b8ec3",
+								"exec": [
+									"\r",
+									"pm.test(\"Malformed data returns a 400 Bad Request\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c98391d3-2b18-4c31-8257-ee8c3fd5a4b4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Temp\",\r\n    \"lastName\": \"Three\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"2021-06-31T10:37:38.909Z\",\r\n    \"degreeName\": \"BSc\",\r\n    \"institutionName\": \"KHSC\",\r\n    \"cgpa\": \"3.43\",\r\n    \"passingYear\": \"2022-05-12\",\r\n    \"presentAddress\": \"Bashundhara,Dhaka\",\r\n    \"phone\": \"01234567890\",\r\n    \"profileImageId\": {{ResumeID}},\r\n    \"resumeId\": {{ImageID}},\r\n    \"email\": \"u1@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/applicants/profile"
+					},
+					"response": []
+				}
+			],
+			"id": "e1972f3c-7738-4495-b297-08a4e7c7dec7"
+		},
+		{
+			"name": "06 _ Circulars",
+			"item": [
+				{
+					"name": "Get All Circulars as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "94ea5af7-3e68-4a53-afb6-296e78e9af37",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"circularID\", jsonData.content[0].id);\r",
+									"\r",
+									"pm.test(\"Response is 200 OK\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"All the circulars are available\", ()=>{\r",
+									"    pm.expect(jsonData.content).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "afeaa0b8-f670-45ad-955a-0d00c6bf8ec0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/circulars",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"circulars"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "id,desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Circulars as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4ad9777e-37be-4fe0-8d81-568ef63afc42",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"applicant_id\", jsonData.content[0].id);\r",
+									"\r",
+									"pm.test(\"Updating Profile is successful\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"All the circulars are available\", ()=>{\r",
+									"    pm.expect(jsonData.content).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "0670eef2-7522-4a2a-95f6-e6b20accfc79",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/circulars?page=2&size=2&sort=id,desc",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"circulars"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "id,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Circular as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1fee9a01-d03f-4ac3-96f1-df101ea0b212",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"circularID\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"A new circular id is created\", ()=>{\r",
+									"    pm.expect(jsonData.id).to.exist;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"HTTP response should be 201 Created\", ()=>{\r",
+									"    pm.response.to.have.status(201);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "132fa084-9dd4-4cbc-85e9-7b333651c550",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Bottle Maker\",\r\n    \"closingDate\": \"2023-07-24\",\r\n    \"overview\": \"We are looking for a   \",\r\n    \"trainingType\": \"FULLTIME\",\r\n    \"vacancy\": 10,\r\n    \"careerLevel\": \"ENTRY\",\r\n    \"requiredEducation\": \"Bsc/Msc in CSE\",\r\n    \"hiringLocation\": \"Satarkul Dhaka\",\r\n    \"skills\": \"S/he should possess a passion for  is a must.\",\r\n    \"duties\": \"S/he should possess \",\r\n    \"minExp\": 2,\r\n    \"maxExp\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Circular with missing param",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1fee9a01-d03f-4ac3-96f1-df101ea0b212",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"circularID\", jsonData.id);\r",
+									"\r",
+									"pm.test(\"A new circular id is created\", ()=>{\r",
+									"    pm.expect(jsonData.id).to.exist;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"HTTP response should be 400 Bad Request\", ()=>{\r",
+									"    pm.response.to.have.status(400);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "4c7fa1a0-c3ef-4916-b4b1-958fc28540a2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \r\n    \"closingDate\": \"2023-07-24\",\r\n    \"overview\": \"We are looking for a   \",\r\n    \"trainingType\": \"FULLTIME\",\r\n    \"vacancy\": 10,\r\n    \"careerLevel\": \"ENTRY\",\r\n    \"requiredEducation\": \"Bsc/Msc in CSE\",\r\n    \"hiringLocation\": \"Satarkul Dhaka\",\r\n    \"skills\": \"S/he should possess a passion for  is a must.\",\r\n    \"duties\": \"S/he should possess \",\r\n    \"minExp\": 2,\r\n    \"maxExp\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Circular as Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1fee9a01-d03f-4ac3-96f1-df101ea0b212",
+								"exec": [
+									"\r",
+									"pm.test(\"Circular creation as applicants is forbidden (403)\", ()=>{\r",
+									"    pm.response.to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "be6c2e26-b5ca-4597-aeae-7baa65dc4ce7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Bottle Maker\",\r\n    \"closingDate\": \"2023-07-24\",\r\n    \"overview\": \"We are looking for a   \",\r\n    \"trainingType\": \"FULLTIME\",\r\n    \"vacancy\": 10,\r\n    \"careerLevel\": \"ENTRY\",\r\n    \"requiredEducation\": \"Bsc/Msc in CSE\",\r\n    \"hiringLocation\": \"Satarkul Dhaka\",\r\n    \"skills\": \"S/he should possess a passion for  is a must.\",\r\n    \"duties\": \"S/he should possess \",\r\n    \"minExp\": 2,\r\n    \"maxExp\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars"
+					},
+					"response": []
+				},
+				{
+					"name": "Get the Circular as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "09e6839a-4f3a-452c-909b-efef14ffba24",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"The exact circular is retrieved\", ()=>{\r",
+									"    pm.expect(jsonData.id).is.eql(pm.environment.get(\"circularID\"))\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3fb2a5c4-2ede-4d84-a034-c30c7935c405",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/circulars/{{circularID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get the Circular as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4c0b87bd-b78e-4914-aca9-41f145c2cfc9",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"The exact circular is retrieved\", ()=>{\r",
+									"    pm.expect(jsonData.id).is.eql(pm.environment.get(\"circularID\"))\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "95e862f5-3216-4bd6-b55a-98c133e47b90",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/circulars/{{circularID}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Apply for a Circular",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "762f8045-cfc2-4783-b6bc-8523d8cfe4ff",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Successfully applied for a job\", () => {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "d784101f-bbcb-41ff-953d-b33832f7e191",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Temp\",\r\n    \"lastName\": \"Three\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"2021-06-31T10:37:38.909Z\",\r\n    \"degreeName\": \"BSc\",\r\n    \"institutionName\": \"KHSC\",\r\n    \"cgpa\": \"3.43\",\r\n    \"passingYear\": \"2022-05-12\",\r\n    \"presentAddress\": \"Bashundhara,Dhaka\",\r\n    \"phone\": \"01234567890\",\r\n    \"profileImageId\": {{ImageID}},\r\n    \"resumeId\": {{ResumeID}},\r\n    \"email\": \"u1@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars/{{circularID}}/apply"
+					},
+					"response": []
+				},
+				{
+					"name": "Repetitive Apply",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "762f8045-cfc2-4783-b6bc-8523d8cfe4ff",
+								"exec": [
+									"// var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Error message generated\", () => {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Failed to place application\");\r",
+									"})\r",
+									"\r",
+									"pm.test(\"400 Bad Request response is generated\", () => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "adf17a20-9134-44f4-aa62-c06ec81f4958",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Temp\",\r\n    \"lastName\": \"Three\",\r\n    \"gender\": \"MALE\",\r\n    \"dateOfBirth\": \"2021-06-31T10:37:38.909Z\",\r\n    \"degreeName\": \"BSc\",\r\n    \"institutionName\": \"KHSC\",\r\n    \"cgpa\": \"3.43\",\r\n    \"passingYear\": \"2022-05-12\",\r\n    \"presentAddress\": \"Bashundhara,Dhaka\",\r\n    \"phone\": \"01234567890\",\r\n    \"profileImageId\": {{ImageID}},\r\n    \"resumeId\": {{ResumeID}},\r\n    \"email\": \"u1@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars/{{circularID}}/apply"
+					},
+					"response": []
+				}
+			],
+			"id": "8ef837e1-c98a-430b-a50c-523accddf557"
+		},
+		{
+			"name": "07 _ Applicants",
+			"item": [
+				{
+					"name": "Applicant List as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebc4bcc2-e053-42e3-a330-9cca8555fb27",
+								"exec": [
+									"pm.test(\"Applicant lists are retrieve for Admin\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check if Response is in JSON Format\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ce56ceb7-4707-4ad7-9a89-ca56537f5fa3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/applicants"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Single Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebc4bcc2-e053-42e3-a330-9cca8555fb27",
+								"exec": [
+									"pm.test(\"A single applicant is retrieved for Admin\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check if Response is in JSON Format\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "8d801b72-ae73-400f-bcc4-88752d244916",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/applicants/{{applicant_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Applicant List as Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ebc4bcc2-e053-42e3-a330-9cca8555fb27",
+								"exec": [
+									"pm.test(\"Applicant list is not show to any applicant\", () => {\r",
+									"    pm.response.to.have.status(403);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Check if Response is in JSON Format\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "1076c56b-b5b2-49d0-89a4-8c487b08d4f0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/applicants"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "daf6b819-cd31-473b-83e1-89b0ae56fca3",
+								"exec": [
+									"pm.test(\"Applicant Deletion is successful\", () => {\r",
+									"    pm.response.to.have.status(204);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "97f9d03e-e92f-4192-98b0-f7818bd02229",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/applicants/6",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"applicants",
+								"6"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Applicant Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7b25bef5-d9ec-45d7-bc49-5dc4db494435",
+								"exec": [
+									"pm.test(\"Applicant data can be successfully viewed by themselves\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ca67b722-13e1-429c-8ffd-b126d446dacb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/applicants/profile"
+					},
+					"response": []
+				}
+			],
+			"id": "e9898b04-2b6c-4a28-9536-d2ddd565a87f"
+		},
+		{
+			"name": "08 _ Notices",
+			"item": [
+				{
+					"name": "Upload Notice Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8346f1bd-4fff-4959-9524-e340f4f1d479",
+								"exec": [
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var filename = jsonData.name;\r",
+									"\r",
+									"if (filename.toLowerCase().endsWith(\".jpeg\")||filename.toLowerCase().endsWith(\".jpg\")||filename.toLowerCase().endsWith(\".png\")){\r",
+									"        pm.environment.set(\"NoticeImageID\", jsonData.id)\r",
+									"} \r",
+									"else if(filename.toLowerCase().endsWith(\".pdf\")){\r",
+									"        pm.environment.set(\"NoticeImageID\", null)\r",
+									"}\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check if the file upload operation is successful\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.expect(jsonData.success).to.exist.and.be.true;\r",
+									"    pm.expect(jsonData.message).to.contain(\"File upload successful\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "14a55b8d-c23f-427c-b8fb-4b51b7095f9a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "2.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/resource/upload",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"resource",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Notice Image as Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8346f1bd-4fff-4959-9524-e340f4f1d479",
+								"exec": [
+									"\r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var filename = jsonData.name;\r",
+									"\r",
+									"if (filename.toLowerCase().endsWith(\".jpeg\")||filename.toLowerCase().endsWith(\".jpg\")||filename.toLowerCase().endsWith(\".png\")){\r",
+									"        pm.environment.set(\"NoticeImageID\", jsonData.id)\r",
+									"} \r",
+									"else if(filename.toLowerCase().endsWith(\".pdf\")){\r",
+									"        pm.environment.set(\"NoticeImageID\", null)\r",
+									"}\r",
+									"\r",
+									"\r",
+									"pm.test(\"Check if the file upload operation is successful\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"    pm.expect(jsonData.success).to.exist.and.be.true;\r",
+									"    pm.expect(jsonData.message).to.contain(\"File upload successful\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "94dd22fd-72bb-4cf1-87c3-94fcf81d00c0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "3.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseURL}}/resource/upload",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"resource",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post a Notice as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efae61ba-1b71-41cb-9b14-8031ee753d64",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"201 Created response should be received\", ()=>{\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"pm.test(\"A notice ID is automatically generated\", ()=>{\r",
+									"    pm.expect(jsonData.id).to.exist;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "a9bbe139-c1ea-4a00-9deb-cba18f913e91",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Trial Notice 3\",\r\n  \"details\": \"This is the trial notice with some details.\",\r\n  \"attachmentId\": {{NoticeImageID}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/notices"
+					},
+					"response": []
+				},
+				{
+					"name": "Post a Notice as Applicant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "97e04eeb-86eb-4eed-af07-4f5b1c0c8cf2",
+								"exec": [
+									"pm.test(\"Applicant cannot upload any notice\", ()=>{\r",
+									"    pm.response.to.have.status(403);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "27734865-61bf-47eb-a4da-1e5711b0e638",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Applicant Notice\",\r\n  \"details\": \"This is the applicant notice with some details.\",\r\n  \"attachmentId\": {{NoticeImageID}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/notices"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Notices Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6fd0c85-64e8-4934-9de1-b9f9524d3686",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"noticeID\", jsonData.content[0].id);\r",
+									"\r",
+									"pm.test(\"Check if all the notices are retrieved\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "5050072d-fcf6-44c6-9e79-939515148a37",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/notices"
+					},
+					"response": []
+				},
+				{
+					"name": "Get A Single Notice",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b6fd0c85-64e8-4934-9de1-b9f9524d3686",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.test(\"Check if a single notice retrieved\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c43bbdb9-0718-401c-bdc5-9cfd24f4d96d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/notices/{{noticeID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "e1f4e599-f42b-4286-a636-3aa98d8840ac"
+		},
+		{
+			"name": "09 _ Rounds",
+			"item": [
+				{
+					"name": "Rounds for a Circular as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9cdbc42a-bff2-40e2-8afb-a4f217fd2915",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.test(\"Rounds are retrieved successfully\", () => {\r",
+									"    pm.expect(jsonData.rounds).to.exist;\r",
+									"})\r",
+									"\r",
+									"// verify if the response body is in JSON format\r",
+									"pm.test(\"Response Format is JSON\", function () {\r",
+									"    var contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "1ce788d4-2031-4355-851a-db5e4a3699b9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{baseURL}}/circulars/{{circularID}}/rounds"
+					},
+					"response": []
+				},
+				{
+					"name": "Add a round to a Circular as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce2c1d6c-1dba-4ceb-9fec-ff8a5e039ed8",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"var requestBody = JSON.parse(pm.request.body.raw);\r",
+									"pm.test(\"Created round is placed in the correct serial\", ()=>{\r",
+									"    pm.expect(requestBody.serialNo).to.eql(jsonData.serialNo);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "b30f46f1-f1b5-4e80-a684-b7918b4146ba",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"circularId\": {{circularID}},\r\n  \"title\": \"Viva Voce\",\r\n  \"description\": \"First round of screening\",\r\n  \"serialNo\": 2,\r\n  \"maxMark\": 100.0,\r\n  \"passMark\": 70.0,\r\n  \"admitCard\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseURL}}/circulars/{{circularID}}/rounds"
+					},
+					"response": []
+				}
+			],
+			"id": "96da3a21-afda-40b9-a490-1490c86b9be0"
+		}
+	]
+}
